@@ -23,32 +23,24 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
       
         super.view.addSubview(authView)
-        setupAuthViewConstraints(authView: authView, parentView: view)
-        
         
         emailField.placeholder = "email"
         emailField.borderStyle = .roundedRect
         emailField.textContentType = UITextContentType.emailAddress
         emailField.isSecureTextEntry = false
-        
         authView.addSubview(emailField)
-        setupAuthViewFieldsConstraints(textField: emailField, parentView: authView)
-        
-        
+
         passwordField.placeholder = "password"
         passwordField.borderStyle = .roundedRect
         passwordField.textContentType = UITextContentType.password
         passwordField.isSecureTextEntry = true
-        
         authView.addSubview(passwordField)
-        setupAuthViewPasswordFieldConstraints(textField: passwordField, parentView: authView)
         
         loginButton.setTitle("Login", for: .normal)
         loginButton.setTitleColor(.blue, for: .normal)
         loginButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
-        
         authView.addSubview(loginButton)
-        setupAuthViewSubmitButtonConstraints(button: loginButton)
+        setupViewConstraints()
         
         
     }
@@ -58,63 +50,43 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func setupAuthViewConstraints(authView: UIView, parentView: UIView) {
+    func setupViewConstraints() {
         authView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let authViewCenterX = NSLayoutConstraint(item: authView, attribute: .centerX, relatedBy: .equal, toItem: parentView, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let authViewCenterY = NSLayoutConstraint(item: authView, attribute: .centerY, relatedBy: .equal, toItem: parentView, attribute: .centerY, multiplier: 1.0, constant: 0)
-        let authViewHeight = NSLayoutConstraint(item: authView, attribute: .height, relatedBy: .equal, toItem: parentView, attribute: .height, multiplier: 0.35, constant: 0)
-        let authViewWidth = NSLayoutConstraint(item: authView, attribute: .width, relatedBy: .equal, toItem: parentView, attribute: .width, multiplier: 1.0, constant: 0)
-        
+        let authViewCenterX = NSLayoutConstraint(item: authView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0)
+        let authViewCenterY = NSLayoutConstraint(item: authView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0)
+        let authViewHeight = NSLayoutConstraint(item: authView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.35, constant: 0)
+        let authViewWidth = NSLayoutConstraint(item: authView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.0, constant: 0)
         view.addConstraints([authViewCenterX, authViewCenterY, authViewWidth, authViewHeight])
+        
+        emailField.translatesAutoresizingMaskIntoConstraints = false
+        let emailFieldCenterX = NSLayoutConstraint(item: emailField, attribute: .centerX, relatedBy: .equal, toItem: authView, attribute: .centerX, multiplier: 1.0, constant: 0)
+        let emailFieldTopSpace = NSLayoutConstraint(item: emailField, attribute: .top, relatedBy: .equal, toItem: authView, attribute: .topMargin, multiplier: 1.0, constant: 20)
+        let emailFieldWidth = NSLayoutConstraint(item: emailField, attribute: .width, relatedBy: .equal, toItem: authView, attribute: .width, multiplier: 0.55, constant: 0)
+        let emailFieldHeight = NSLayoutConstraint(item: emailField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
+        authView.addConstraints([emailFieldCenterX, emailFieldTopSpace, emailFieldWidth, emailFieldHeight])
+        
+        passwordField.translatesAutoresizingMaskIntoConstraints = false
+        let passwordFieldCenterX = NSLayoutConstraint(item: passwordField, attribute: .centerX, relatedBy: .equal, toItem: authView, attribute: .centerX, multiplier: 1.0, constant: 0)
+        let passwordFieldTopSpace = NSLayoutConstraint(item: passwordField, attribute: .top, relatedBy: .equal, toItem: emailField, attribute: .bottomMargin, multiplier: 1.0, constant: 20)
+        let passwordFieldWidth = NSLayoutConstraint(item: passwordField, attribute: .width, relatedBy: .equal, toItem: authView, attribute: .width, multiplier: 0.55, constant: 0)
+        let passwordFieldHeight = NSLayoutConstraint(item: passwordField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
+        authView.addConstraints([passwordFieldCenterX, passwordFieldTopSpace, passwordFieldWidth, passwordFieldHeight])
+        
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        let loginButtonCenterX = NSLayoutConstraint(item: loginButton, attribute: .centerX, relatedBy: .equal, toItem: authView, attribute: .centerX, multiplier: 1.0, constant: 0)
+        let loginButtonTopSpace = NSLayoutConstraint(item: loginButton, attribute: .top, relatedBy: .equal, toItem: passwordField, attribute: .bottomMargin, multiplier: 1.0, constant: 20)
+        let loginButtonWidth = NSLayoutConstraint(item: loginButton, attribute: .width, relatedBy: .equal, toItem: authView, attribute: .width, multiplier: 0.20, constant: 0)
+        let loginButtonHeight = NSLayoutConstraint(item: loginButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
+        authView.addConstraints([loginButtonCenterX, loginButtonTopSpace, loginButtonWidth, loginButtonHeight])
     }
     
-    func setupAuthViewFieldsConstraints(textField: UITextField, parentView: UIView){
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        let textFieldCenterX = NSLayoutConstraint(item: textField, attribute: .centerX, relatedBy: .equal, toItem: parentView, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let textFieldTopSpace = NSLayoutConstraint(item: textField, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .topMargin, multiplier: 1.0, constant: 20)
-        let textFieldWidth = NSLayoutConstraint(item: textField, attribute: .width, relatedBy: .equal, toItem: parentView, attribute: .width, multiplier: 0.55, constant: 0)
-        let textFieldHeight = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
-        
-        parentView.addConstraints([textFieldCenterX, textFieldTopSpace, textFieldWidth, textFieldHeight])
-        
-        
-    }
-    
-    func setupAuthViewPasswordFieldConstraints(textField: UITextField, parentView: UIView){
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        let textFieldCenterX = NSLayoutConstraint(item: textField, attribute: .centerX, relatedBy: .equal, toItem: parentView, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let textFieldTopSpace = NSLayoutConstraint(item: textField, attribute: .top, relatedBy: .equal, toItem: emailField, attribute: .bottomMargin, multiplier: 1.0, constant: 20)
-        let textFieldWidth = NSLayoutConstraint(item: textField, attribute: .width, relatedBy: .equal, toItem: parentView, attribute: .width, multiplier: 0.55, constant: 0)
-        let textFieldHeight = NSLayoutConstraint(item: textField, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
-        
-        parentView.addConstraints([textFieldCenterX, textFieldTopSpace, textFieldWidth, textFieldHeight])
-        
-        
-    }
-    func setupAuthViewSubmitButtonConstraints(button: UIButton){
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        let buttonCenterX = NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: authView, attribute: .centerX, multiplier: 1.0, constant: 0)
-        let buttonTopSpace = NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: passwordField, attribute: .bottomMargin, multiplier: 1.0, constant: 20)
-        let buttonWidth = NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: authView, attribute: .width, multiplier: 0.20, constant: 0)
-        let buttonHeight = NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 50)
-        
-        authView.addConstraints([buttonCenterX, buttonTopSpace, buttonWidth, buttonHeight])
-    }
     
     @objc func pressed(){
         print("pressed")
         
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return true;
-    }
+
 
 }
 
