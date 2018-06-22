@@ -13,7 +13,7 @@ enum authType {
     case SignIn
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     let authView = UIView()
     let emailField = UITextField()
     let passwordField = UITextField()
@@ -33,12 +33,14 @@ class ViewController: UIViewController {
         emailField.borderStyle = .roundedRect
         emailField.textContentType = UITextContentType.emailAddress
         emailField.isSecureTextEntry = false
+        emailField.delegate = self
         authView.addSubview(emailField)
 
         passwordField.placeholder = "password"
         passwordField.borderStyle = .roundedRect
         passwordField.textContentType = UITextContentType.password
         passwordField.isSecureTextEntry = true
+        passwordField.delegate = self
         authView.addSubview(passwordField)
 
         loginButton.setTitle("Login", for: .normal)
@@ -48,6 +50,9 @@ class ViewController: UIViewController {
         
         positionAuthViewConstraints(views: ["superview": view, "authView": authView])
         setupConstraintsAuthView(views: ["emailField": emailField, "passwordField": passwordField, "loginButton": loginButton], metrics: ["standardOffset": 20, "basicHeight": 50, "fieldWidth": Int(authView.frame.width * 0.55), "loginButtonWidth": Int(authView.frame.width * 0.20)])
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
         
     }
 
@@ -112,6 +117,19 @@ class ViewController: UIViewController {
     @objc func pressed(){
         print("pressed")
         
+    }
+    
+    @objc func dismissKeyboard(){
+        view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            self.passwordField.becomeFirstResponder()
+        }else{
+            self.passwordField.resignFirstResponder()
+        }
+        return true
     }
     
 
