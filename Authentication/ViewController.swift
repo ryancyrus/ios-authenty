@@ -46,7 +46,8 @@ class ViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
         authView.addSubview(loginButton)
         
-        setupConstraints()
+        positionAuthViewConstraints(views: ["superview": view, "authView": authView])
+        setupConstraintsAuthView(views: ["emailField": emailField, "passwordField": passwordField, "loginButton": loginButton], metrics: ["standardOffset": 20, "basicHeight": 50, "fieldWidth": Int(authView.frame.width * 0.55), "loginButtonWidth": Int(authView.frame.width * 0.20)])
         
     }
 
@@ -55,21 +56,16 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setupConstraints(){
-        
-        let authViews: [String: AnyObject] = ["emailField": emailField, "passwordField": passwordField, "loginButton": loginButton]
-        let superViews: [String: AnyObject] = ["superview": view, "authView": authView]
-        let metrics: [String: Int] = ["standardOffset": 20, "basicHeight": 50, "fieldWidth": Int(authView.frame.width * 0.55), "loginButtonWidth": Int(authView.frame.width * 0.20)]
-        
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[superview]-(<=1)-[authView]", options: [.alignAllCenterX], metrics: nil, views: superViews))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[superview]-(<=1)-[authView]", options: [.alignAllCenterY], metrics: nil, views: superViews))
-        
+    func positionAuthViewConstraints(views: [String: AnyObject]){
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[superview]-(<=1)-[authView]", options: [.alignAllCenterX], metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[superview]-(<=1)-[authView]", options: [.alignAllCenterY], metrics: nil, views: views))
         NSLayoutConstraint.activate([authView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
                                      authView.widthAnchor.constraint(equalTo: view.widthAnchor)
             ])
-        
-        authView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-standardOffset-[emailField(basicHeight)]-standardOffset-[passwordField(basicHeight)]-standardOffset-[loginButton(basicHeight)]", options: [], metrics: metrics, views: authViews))
-        
+    }
+    
+    func setupConstraintsAuthView(views: [String: AnyObject], metrics: [String: Int]){
+        authView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-standardOffset-[emailField(basicHeight)]-standardOffset-[passwordField(basicHeight)]-standardOffset-[loginButton(basicHeight)]", options: [], metrics: metrics, views: views))
         NSLayoutConstraint.activate([emailField.widthAnchor.constraint(equalTo: authView.widthAnchor, multiplier: 0.55),
                                      emailField.centerXAnchor.constraint(equalTo: authView.centerXAnchor),
                                      passwordField.widthAnchor.constraint(equalTo: authView.widthAnchor, multiplier: 0.55),
