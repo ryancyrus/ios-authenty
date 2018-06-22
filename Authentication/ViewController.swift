@@ -115,8 +115,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     
     @objc func pressed(){
-        print("pressed")
+        dismissKeyboard()
+        if flagEmail(email: emailField.text!) || flagPassword(password: passwordField.text!) {
+            let alertController = UIAlertController(title: "Error", message: "Email or password input might be wrong", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self.show(alertController, sender: self)
+            
+        }else{
+            loginWithCredentials(email: emailField.text!, password: passwordField.text!)
+        }
         
+    }
+    
+    func loginWithCredentials(email: String, password: String){
+        print("Perform Login.")
     }
     
     func isValidEmail(_ email: String) -> Bool {
@@ -134,7 +147,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func checkErrorsOnEmailInput(email: String) -> String{
         if email.isEmpty{
-            
             return "Please enter an email address."
         }else if !isValidEmail(email){
             return "Please enter a valid email address"
@@ -143,31 +155,47 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return ""
     }
     
-    func flagEmail(email:String){
+    @discardableResult func flagEmail(email:String) -> Bool{
         let error = checkErrorsOnEmailInput(email: email)
         if !error.isEmpty{
             emailField.layer.borderColor = UIColor.red.cgColor
             emailField.layer.borderWidth = 1.0
+            return true
+        }else{
+            emailField.layer.borderColor = UIColor.clear.cgColor
         }
+        return false
     }
     
-    func flagPassword(password:String){
+    @discardableResult func flagPassword(password:String) -> Bool{
         if password.isEmpty{
             passwordField.layer.borderColor = UIColor.red.cgColor
             passwordField.layer.borderWidth = 1.0
+            return true
+        }else{
+            passwordField.layer.borderColor = UIColor.clear.cgColor
         }
+        return false
     }
     
     @objc func dismissKeyboard(){
         view.endEditing(true)
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == emailField{
+            flagEmail(email: emailField.text!)
+        }else if textField == passwordField{
+            flagPassword(password: passwordField.text!)
+        }
+        
+        
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailField {
-            flagEmail(email: emailField.text!)
             self.passwordField.becomeFirstResponder()
-        }else{
-            flagPassword(password: passwordField.text!)
+        }else if textField == passwordField{
             self.passwordField.resignFirstResponder()
         }
         return true
